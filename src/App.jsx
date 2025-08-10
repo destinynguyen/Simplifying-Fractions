@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
-function AreaBox({ rows, cols, filled, label }) {
+function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 }) {
   const total = rows * cols
   const cells = Array.from({ length: total })
+  const showLines = lineState !== 'none'
+  const lines = showLines ? Array.from({ length: Math.max(0, lineCount) }) : []
   return (
     <div className="area-card">
       <div
@@ -15,6 +17,17 @@ function AreaBox({ rows, cols, filled, label }) {
         {cells.map((_, i) => (
           <div key={i} className={"area-cell" + (i < filled ? " filled" : "")} />
         ))}
+        {lines.map((_, i) => {
+          const topPercent = ((i + 1) * 100) / (lines.length + 1)
+          return (
+            <div
+              key={i}
+              className={`line-draw ${lineState}`}
+              style={{ top: `${topPercent}%` }}
+              aria-hidden="true"
+            />
+          )
+        })}
       </div>
       <div className="area-label">{label}</div>
     </div>
@@ -32,6 +45,7 @@ const FRACTIONS = [
 const STEP_MESSAGES = [
   'This is our fraction! Click the forward button to see how to simplify!',
   "Let's multiply the numerator and denominator!",
+  'Click next to remove the horizontal line!',
 ]
 
 export default function App() {
@@ -48,14 +62,14 @@ export default function App() {
   }
 
   useEffect(() => {
-    // Reset step visuals when step changes
+    // Reset visuals when step changes
     resetStep2Visuals()
 
     let multTimer
     let eqTimer
     let prodTimer
 
-    if (step === 1) {
+    if (step === 1 || step === 2) {
       multTimer = setTimeout(() => setShowMultiplier(true), 1000)
       eqTimer = setTimeout(() => setShowEquals(true), 1400)
       prodTimer = setTimeout(() => setShowProduct(true), 1800)
@@ -99,6 +113,24 @@ export default function App() {
   const factor = f.den === 3 ? 3 : 2
   const pNum = f.num * factor
   const pDen = f.den * factor
+  const lineCount = factor - 1
+
+  // Step-aware equation pieces
+  const isStep3 = step === 2
+  const leftNum = isStep3 ? pNum : f.num
+  const leftDen = isStep3 ? pDen : f.den
+  const operatorSymbol = isStep3 ? '÷' : '×'
+  const resultNum = isStep3 ? f.num : pNum
+  const resultDen = isStep3 ? f.den : pDen
+  const multiplierAria = isStep3 ? `divided by ${factor} over ${factor}` : `times ${factor} over ${factor}`
+
+  // Line behavior per step
+  let lineState = 'none'
+  if (step === 1) {
+    lineState = showProduct ? 'draw' : 'none'
+  } else if (step === 2) {
+    lineState = showProduct ? 'erase' : 'present'
+  }
 
   return (
     <div className="page">
@@ -114,18 +146,25 @@ export default function App() {
         <div className="interactive-shell">
           <div className="content-row">
             <div className="area-side">
-              <AreaBox rows={f.rows} cols={f.cols} filled={f.filled} label={f.label} />
+              <AreaBox
+                rows={f.rows}
+                cols={f.cols}
+                filled={f.filled}
+                label={f.label}
+                lineState={lineState}
+                lineCount={lineCount}
+              />
             </div>
-            <div className={`fraction-side ${step === 1 ? 'compact' : ''}`}>
+            <div className={`fraction-side ${step >= 1 ? 'compact' : ''}`}>
               <div className={`frac-wrap ${showMultiplier ? 'with-mult' : ''}`}>
-                <span className="fraction-large" aria-label={`fraction ${f.num} over ${f.den}`}>
-                  <span className="numerator">{f.num}</span>
+                <span className="fraction-large" aria-label={`fraction ${leftNum} over ${leftDen}`}>
+                  <span className="numerator">{leftNum}</span>
                   <span className="bar" />
-                  <span className="denominator">{f.den}</span>
+                  <span className="denominator">{leftDen}</span>
                 </span>
-                {step === 1 && (
-                  <span className={`multiplier appear ${showMultiplier ? 'visible' : ''}`} aria-label={`times ${factor} over ${factor}`}>
-                    ×
+                {(step >= 1) && (
+                  <span className={`multiplier appear ${showMultiplier ? 'visible' : ''}`} aria-label={multiplierAria}>
+                    {operatorSymbol}
                     <span className="mini-frac">
                       <span className="mini-num">{factor}</span>
                       <span className="bar" />
@@ -133,14 +172,14 @@ export default function App() {
                     </span>
                   </span>
                 )}
-                {step === 1 && (
+                {(step >= 1) && (
                   <span className={`equals appear ${showEquals ? 'visible' : ''}`} aria-hidden="true">=</span>
                 )}
-                {step === 1 && (
-                  <span className={`fraction-large result appear ${showProduct ? 'visible' : ''}`} aria-label={`fraction ${pNum} over ${pDen}`}>
-                    <span className="numerator">{pNum}</span>
+                {(step >= 1) && (
+                  <span className={`fraction-large result appear ${showProduct ? 'visible' : ''}`} aria-label={`fraction ${resultNum} over ${resultDen}`}>
+                    <span className="numerator">{resultNum}</span>
                     <span className="bar" />
-                    <span className="denominator">{pDen}</span>
+                    <span className="denominator">{resultDen}</span>
                   </span>
                 )}
               </div>
@@ -153,12 +192,6 @@ export default function App() {
           </div>
 
           <div className="coach">
-            <div className="mascot" aria-hidden="true">
-              <div className="eyes">
-                <span />
-                <span />
-              </div>
-            </div>
             <div className="bubble">{STEP_MESSAGES[step]}</div>
           </div>
         </div>

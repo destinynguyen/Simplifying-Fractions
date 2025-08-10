@@ -195,11 +195,27 @@ body {
   gap: 10px;
   width: calc(var(--box-size) - 48px);
 }
-.area-card {
-  display: grid;
-  gap: 6px;
-  justify-items: center;
+.area-card { position: relative; }
+/* Animated line states */
+.line-draw {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600));
+  border-radius: 3px;
+  transform: translateY(-50%);
+  overflow: hidden;
+  width: 0;
+  opacity: 0;
 }
+.line-draw.draw { opacity: 1; animation: drawLine 650ms ease forwards; }
+.line-draw.present { width: 100%; opacity: 1; }
+.line-draw.erase { width: 100%; opacity: 1; animation: eraseLine 500ms ease forwards; }
+@keyframes drawLine { from { width: 0; } to { width: 100%; } }
+@keyframes eraseLine { from { width: 100%; opacity: 1; } to { width: 0; opacity: 0; } }
+.area-grid { position: relative; }
+.line-draw { left: 0; right: 0; }
 .area-grid {
   display: grid;
   width: 100%;
