@@ -46,7 +46,7 @@ const FRACTIONS = [
 ]
 
 const STEP_MESSAGES = [
-  'Click next to multiply our fraction!',
+  'Click next to multiply the fraction!',
   "Let's multiply the numerator and denominator!",
   "Now, let's simplify the fraction!",
 ]
@@ -58,12 +58,51 @@ export default function App() {
   const [showEquals, setShowEquals] = useState(false)
   const [showProduct, setShowProduct] = useState(false)
   const [animCycle, setAnimCycle] = useState(0)
+  const [introActive, setIntroActive] = useState(false)
+  const [introShifted, setIntroShifted] = useState(false)
+  const [introAreaShown, setIntroAreaShown] = useState(false)
+  const [introAreaMsg, setIntroAreaMsg] = useState(false)
+  const [introNextPrompt, setIntroNextPrompt] = useState(false)
 
   const resetStep2Visuals = () => {
     setShowMultiplier(false)
     setShowEquals(false)
     setShowProduct(false)
   }
+
+  useEffect(() => {
+    // step 0: show message for 1s, animate fraction to position, then reveal area and brief area-model message
+    let msgTimer
+    let areaTimer
+    let areaMsgTimer
+    if (step === 0) {
+      setIntroActive(true)
+      setIntroShifted(true)
+      setIntroAreaShown(false)
+      setIntroAreaMsg(false)
+      setIntroNextPrompt(false)
+      msgTimer = setTimeout(() => {
+        setIntroActive(false)
+        setIntroShifted(false) // triggers CSS transition to final position
+        areaTimer = setTimeout(() => {
+          setIntroAreaShown(true)
+          setIntroAreaMsg(true)
+          areaMsgTimer = setTimeout(() => { setIntroAreaMsg(false); setIntroNextPrompt(true); }, 1500)
+        }, 450)
+      }, 1500)
+    } else {
+      setIntroActive(false)
+      setIntroShifted(false)
+      setIntroAreaShown(true)
+      setIntroAreaMsg(false)
+      setIntroNextPrompt(false)
+    }
+    return () => {
+      clearTimeout(msgTimer)
+      clearTimeout(areaTimer)
+      clearTimeout(areaMsgTimer)
+    }
+  }, [step])
 
   useEffect(() => {
     // Reset visuals when step changes or when a reset occurs on the same step
@@ -91,6 +130,22 @@ export default function App() {
     // Reset only the current step's visuals and restart its timers
     resetStep2Visuals()
     setAnimCycle((c) => c + 1)
+    if (step === 0) {
+      setIntroActive(true)
+      setIntroShifted(true)
+      setIntroAreaShown(false)
+      setIntroAreaMsg(false)
+      setIntroNextPrompt(false)
+      setTimeout(() => {
+        setIntroActive(false)
+        setIntroShifted(false)
+        setTimeout(() => {
+          setIntroAreaShown(true)
+          setIntroAreaMsg(true)
+          setTimeout(() => { setIntroAreaMsg(false); setIntroNextPrompt(true); }, 1500)
+        }, 450)
+      }, 1500)
+    }
   }
 
   const randomize = () => {
@@ -104,7 +159,20 @@ export default function App() {
     })
     setStep(0)
     resetStep2Visuals()
-    setAnimCycle((c) => c + 1)
+    setIntroActive(true)
+    setIntroShifted(true)
+    setIntroAreaShown(false)
+    setIntroAreaMsg(false)
+    setIntroNextPrompt(false)
+    setTimeout(() => {
+      setIntroActive(false)
+      setIntroShifted(false)
+      setTimeout(() => {
+        setIntroAreaShown(true)
+        setIntroAreaMsg(true)
+        setTimeout(() => { setIntroAreaMsg(false); setIntroNextPrompt(true); }, 1500)
+      }, 450)
+    }, 1500)
   }
 
   const goPrev = () => {
@@ -148,8 +216,22 @@ export default function App() {
   const coachImg = step === 2 && showProduct ? flexiTeacher : step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
   const coachClass = step === 2 ? (showProduct ? 'flexi flexi-teacher' : 'flexi flexi-big') : 'flexi'
   const bubbleClass = step === 2 ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}` : 'bubble'
+
+  const introMsg1 = 'Here is our fraction!'
+  const introMsg2 = "And here is the fraction's area model!"
   const step3FinalMsg = 'Multiply, then simplify — you\u2019ll end up with the same fraction you started with!'
-  const bubbleText = step === 2 && showProduct ? step3FinalMsg : STEP_MESSAGES[step]
+
+  let bubbleText
+  if (step === 0) {
+    if (introActive) bubbleText = introMsg1
+    else if (introAreaMsg) bubbleText = introMsg2
+    else if (introNextPrompt) bubbleText = STEP_MESSAGES[0]
+    else bubbleText = introMsg1
+  } else if (step === 2 && showProduct) {
+    bubbleText = step3FinalMsg
+  } else {
+    bubbleText = STEP_MESSAGES[step]
+  }
 
   return (
     <div className="page">
@@ -163,8 +245,8 @@ export default function App() {
         </div>
 
         <div className="interactive-shell">
-          <div className={`content-row ${step === 0 ? 'step0-up' : ''}`}>
-            <div className="area-side">
+          <div className="content-row">
+            <div className={`area-side ${step === 0 && !introAreaShown ? 'intro-hide' : ''}`}>
               <AreaBox
                 rows={f.rows}
                 cols={f.cols}
@@ -174,7 +256,7 @@ export default function App() {
                 lineCount={lineCount}
               />
             </div>
-            <div className={`fraction-side ${step >= 1 ? 'compact' : ''}`}>
+            <div className={`fraction-side ${step >= 1 ? 'compact' : ''} ${step === 0 && introShifted ? 'intro-left' : ''}`}>
               <div className={`frac-wrap ${showMultiplier ? 'with-mult' : ''}`}>
                 <span className="fraction-large" aria-label={`fraction ${leftNum} over ${leftDen}`}>
                   <span className="numerator">{leftNum}</span>

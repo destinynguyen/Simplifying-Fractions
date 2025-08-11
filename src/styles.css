@@ -289,6 +289,11 @@ body {
 .fraction-side.compact .multiplier { transform: none; }
 .fraction-side.compact .multiplier .mini-frac { transform: translateY(-4px); }
 
+/* Ensure intro-left fraction matches step 1 compact sizing */
+.fraction-side.intro-left .fraction-large .numerator,
+.fraction-side.intro-left .fraction-large .denominator { font-size: 28px; }
+.fraction-side.intro-left .fraction-large .bar { width: 44px; height: 3px; }
+
 .equals { font-weight: 900; color: var(--purple-600); font-size: 28px; opacity: 0; transform: translateY(6px); transition: opacity 220ms ease, transform 220ms ease; }
 .result { opacity: 0; transform: translateY(6px); transition: opacity 220ms ease, transform 220ms ease; }
 .appear { opacity: 0; transform: translateY(6px); }
@@ -315,6 +320,23 @@ body {
 .mini-frac.glow .mini-num,
 .mini-frac.glow .mini-den { color: var(--purple-600); }
 
+.content-row.intro-center { grid-template-columns: 1fr; justify-items: center; transform: none; }
+.fraction-side.full { display: grid; place-items: center; }
+.content-row.intro-shift { grid-template-columns: 1fr; }
+.fraction-side.intro-left { justify-self: start; transform: translateX(-24px); }
+
+/* Intro adjustments */
+.area-side.intro-hide { visibility: hidden; }
+.fraction-side.intro-left { transform: translateX(-24px); }
+
+/* Ensure intro-left fraction has larger intro sizing */
+.fraction-side.intro-left .fraction-large .numerator,
+.fraction-side.intro-left .fraction-large .denominator { font-size: 36px; }
+.fraction-side.intro-left .fraction-large .bar { width: 60px; height: 4px; }
+
+/* Intro slide animation uses the same transform transition */
+.fraction-side.intro-left { transform: translateX(-24px); transition: transform 400ms ease; }
+
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
   .fraction .numerator, .fraction .denominator { font-size: 38px; }
@@ -339,4 +361,12 @@ body {
   .fraction-side.compact .multiplier .bar { width: 38px; height: 3px; }
   .fraction-side.compact .multiplier { transform: none; }
   .fraction-side.compact .multiplier .mini-frac { transform: translateY(-2px); }
+  /* Intro-left mobile sizes to match compact */
+  .fraction-side.intro-left .fraction-large .numerator,
+  .fraction-side.intro-left .fraction-large .denominator { font-size: 24px; }
+  .fraction-side.intro-left .fraction-large .bar { width: 38px; height: 3px; }
+  /* Intro-left mobile sizes (larger than compact) */
+  .fraction-side.intro-left .fraction-large .numerator,
+  .fraction-side.intro-left .fraction-large .denominator { font-size: 30px; }
+  .fraction-side.intro-left .fraction-large .bar { width: 52px; height: 4px; }
 } 
