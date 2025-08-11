@@ -43,9 +43,9 @@ const FRACTIONS = [
 ]
 
 const STEP_MESSAGES = [
-  'This is our fraction! Click the forward button to see how to simplify!',
+  'Click next to multiply our fraction!',
   "Let's multiply the numerator and denominator!",
-  'Click next to remove the horizontal line!',
+  "Now, let's simplify the fraction!",
 ]
 
 export default function App() {
@@ -69,10 +69,12 @@ export default function App() {
     let eqTimer
     let prodTimer
 
+    const baseDelay = step === 2 ? 1000 : 0
+
     if (step === 1 || step === 2) {
-      multTimer = setTimeout(() => setShowMultiplier(true), 1000)
-      eqTimer = setTimeout(() => setShowEquals(true), 1400)
-      prodTimer = setTimeout(() => setShowProduct(true), 1800)
+      multTimer = setTimeout(() => setShowMultiplier(true), baseDelay + 1000)
+      eqTimer = setTimeout(() => setShowEquals(true), baseDelay + 1400)
+      prodTimer = setTimeout(() => setShowProduct(true), baseDelay + 1800)
     }
     return () => {
       clearTimeout(multTimer)
