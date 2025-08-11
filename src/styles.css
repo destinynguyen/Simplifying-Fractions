@@ -180,6 +180,7 @@ body {
 
 .flexi { width: 96px; height: auto; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08)); transform: translateY(6px); }
 .flexi-big { width: 120px; }
+.flexi-teacher { width: 88px; }
 
 .area-models {
   display: grid;
@@ -301,6 +302,9 @@ body {
 .fraction-side.compact .result .bar { width: 44px; height: 3px; }
 
 .bubble-left-more { margin-left: -14px; }
+.bubble-down { transform: translateY(6px); }
+
+.step0-up { transform: translateY(-36px); }
 
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import flexiWave from './Flexi_Wave.svg'
 import flexiIdea from './Flexi_Idea.svg'
 import flexiStars from './Flexi_Stars.svg'
+import flexiTeacher from './Flexi_Teacher (1).svg'
 
 function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 }) {
   const total = rows * cols
@@ -144,9 +145,11 @@ export default function App() {
     lineState = showProduct ? 'erase' : 'present'
   }
 
-  const coachImg = step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
-  const coachClass = step === 2 ? 'flexi flexi-big' : 'flexi'
-  const bubbleClass = step === 2 ? 'bubble bubble-left-more' : 'bubble'
+  const coachImg = step === 2 && showProduct ? flexiTeacher : step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
+  const coachClass = step === 2 ? (showProduct ? 'flexi flexi-teacher' : 'flexi flexi-big') : 'flexi'
+  const bubbleClass = step === 2 ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}` : 'bubble'
+  const step3FinalMsg = 'Multiply, then simplify — you\u2019ll end up with the same fraction you started with!'
+  const bubbleText = step === 2 && showProduct ? step3FinalMsg : STEP_MESSAGES[step]
 
   return (
     <div className="page">
@@ -160,7 +163,7 @@ export default function App() {
         </div>
 
         <div className="interactive-shell">
-          <div className="content-row">
+          <div className={`content-row ${step === 0 ? 'step0-up' : ''}`}>
             <div className="area-side">
               <AreaBox
                 rows={f.rows}
@@ -209,7 +212,7 @@ export default function App() {
 
           <div className="coach">
             <img className={coachClass} src={coachImg} alt="" />
-            <div className={bubbleClass}>{STEP_MESSAGES[step]}</div>
+            <div className={bubbleClass}>{bubbleText}</div>
           </div>
         </div>
       </div>
