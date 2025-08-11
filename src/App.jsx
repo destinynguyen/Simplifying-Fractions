@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import flexiWave from './Flexi_Wave.svg'
+import flexiIdea from './Flexi_Idea.svg'
+import flexiStars from './Flexi_Stars.svg'
 
 function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 }) {
   const total = rows * cols
@@ -54,6 +56,7 @@ export default function App() {
   const [showMultiplier, setShowMultiplier] = useState(false)
   const [showEquals, setShowEquals] = useState(false)
   const [showProduct, setShowProduct] = useState(false)
+  const [animCycle, setAnimCycle] = useState(0)
 
   const resetStep2Visuals = () => {
     setShowMultiplier(false)
@@ -62,7 +65,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    // Reset visuals when step changes
+    // Reset visuals when step changes or when a reset occurs on the same step
     resetStep2Visuals()
 
     let multTimer
@@ -81,7 +84,13 @@ export default function App() {
       clearTimeout(eqTimer)
       clearTimeout(prodTimer)
     }
-  }, [step])
+  }, [step, animCycle])
+
+  const handleReset = () => {
+    // Reset only the current step's visuals and restart its timers
+    resetStep2Visuals()
+    setAnimCycle((c) => c + 1)
+  }
 
   const randomize = () => {
     setIdx((current) => {
@@ -94,6 +103,7 @@ export default function App() {
     })
     setStep(0)
     resetStep2Visuals()
+    setAnimCycle((c) => c + 1)
   }
 
   const goPrev = () => {
@@ -134,6 +144,10 @@ export default function App() {
     lineState = showProduct ? 'erase' : 'present'
   }
 
+  const coachImg = step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
+  const coachClass = step === 2 ? 'flexi flexi-big' : 'flexi'
+  const bubbleClass = step === 2 ? 'bubble bubble-left-more' : 'bubble'
+
   return (
     <div className="page">
       <div className="card">
@@ -141,7 +155,7 @@ export default function App() {
           <h2 className="title">Simplifying Fractions</h2>
           <div className="actions">
             <button className="random-btn" type="button" onClick={randomize}>Random</button>
-            <button className="reset-btn" type="button">Reset</button>
+            <button className="reset-btn" type="button" onClick={handleReset}>Reset</button>
           </div>
         </div>
 
@@ -194,8 +208,8 @@ export default function App() {
           </div>
 
           <div className="coach">
-            <img className="flexi" src={flexiWave} alt="" />
-            <div className="bubble">{STEP_MESSAGES[step]}</div>
+            <img className={coachClass} src={coachImg} alt="" />
+            <div className={bubbleClass}>{STEP_MESSAGES[step]}</div>
           </div>
         </div>
       </div>
