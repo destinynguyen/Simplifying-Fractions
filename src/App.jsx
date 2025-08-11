@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import flexiWave from './Flexi_Wave.svg'
 
 function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 }) {
   const total = rows * cols
@@ -29,7 +30,6 @@ function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 
           )
         })}
       </div>
-      <div className="area-label">{label}</div>
     </div>
   )
 }
@@ -194,6 +194,7 @@ export default function App() {
           </div>
 
           <div className="coach">
+            <img className="flexi" src={flexiWave} alt="" />
             <div className="bubble">{STEP_MESSAGES[step]}</div>
           </div>
         </div>

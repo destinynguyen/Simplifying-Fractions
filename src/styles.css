@@ -139,7 +139,7 @@ body {
 /* Coach area (mascot + instruction bubble) */
 .coach {
   position: absolute;
-  left: 22px;
+  left: 8px;
   bottom: 18px;
   display: flex;
   align-items: flex-end;
@@ -163,31 +163,22 @@ body {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   color: #3a3e45;
   font-weight: 500;
   box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: -8px;
+  transform: translateY(-14px);
 }
-.bubble::before {
-  content: "";
-  position: absolute;
-  left: -10px;
-  bottom: 18px;
-  width: 0; height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #ffffff;
-}
-.bubble::after {
-  content: "";
-  position: absolute;
-  left: -12px;
-  bottom: 17px;
-  width: 0; height: 0;
-  border-top: 11px solid transparent;
-  border-bottom: 11px solid transparent;
-  border-right: 11px solid var(--border);
-}
+/* triangle (white front) */
+.bubble::before { content: ""; position: absolute; left: -10px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-right: 10px solid #ffffff; z-index: 1; }
+/* triangle outline behind (border color) */
+.bubble::after { content: ""; position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 0; height: 0; border-top: 11px solid transparent; border-bottom: 11px solid transparent; border-right: 11px solid var(--border); z-index: 0; }
+
+.flexi { width: 96px; height: auto; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.08)); transform: translateY(6px); }
 
 .area-models {
   display: grid;
