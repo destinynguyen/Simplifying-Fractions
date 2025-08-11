@@ -184,7 +184,7 @@ export default function App() {
                 {(step >= 1) && (
                   <span className={`multiplier appear ${showMultiplier ? 'visible' : ''}`} aria-label={multiplierAria}>
                     {operatorSymbol}
-                    <span className="mini-frac">
+                    <span className={`mini-frac ${showMultiplier ? 'glow' : ''}`}>
                       <span className="mini-num">{factor}</span>
                       <span className="bar" />
                       <span className="mini-den">{factor}</span>
