@@ -215,7 +215,11 @@ export default function App() {
 
   const coachImg = step === 2 && showProduct ? flexiTeacher : step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
   const coachClass = step === 2 ? (showProduct ? 'flexi flexi-teacher' : 'flexi flexi-big') : 'flexi'
-  const bubbleClass = step === 2 ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}` : 'bubble'
+  const bubbleClass = step === 2
+    ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}`
+    : step === 1
+    ? 'bubble bubble-step1-down'
+    : 'bubble'
 
   const introMsg1 = 'Here is our fraction!'
   const introMsg2 = "And here is the fraction's area model!"

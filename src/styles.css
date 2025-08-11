@@ -120,7 +120,7 @@ body {
   transform: translateX(-50%);
   display: flex;
   gap: 16px;
-  z-index: 2;
+  z-index: 5;
 }
 .nav-btn {
   width: 46px;
@@ -337,15 +337,20 @@ body {
 /* Intro slide animation uses the same transform transition */
 .fraction-side.intro-left { transform: translateX(-24px); transition: transform 400ms ease; }
 
+.bubble-step1-down { transform: translateY(-8px); }
+
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
   .fraction .numerator, .fraction .denominator { font-size: 38px; }
   .fraction .bar { width: 100px; }
-  .nav { bottom: 84px; }
-  .nav-btn { width: 40px; height: 40px; font-size: 18px; }
+  .nav { bottom: 96px; }
+  .nav-btn { width: 36px; height: 36px; font-size: 16px; }
   .mascot { width: 54px; height: 54px; }
-  .bubble { max-width: 220px; }
-  .content-row { width: calc(var(--box-size) - 36px); gap: 12px; transform: translateY(-20px); }
+  .bubble { max-width: 220px; transform: translateY(-8px); }
+  .bubble-step1-down { transform: translateY(2px); }
+  .coach { z-index: 3; pointer-events: none; }
+  .flexi { width: 84px; }
+  .content-row { width: calc(var(--box-size) - 36px); gap: 12px; transform: translateY(-44px); }
   .fraction-large .numerator, .fraction-large .denominator { font-size: 30px; }
   .fraction-large .bar { width: 52px; height: 4px; }
   .fraction-side.shifted { transform: translateX(-36px); }
@@ -369,4 +374,6 @@ body {
   .fraction-side.intro-left .fraction-large .numerator,
   .fraction-side.intro-left .fraction-large .denominator { font-size: 30px; }
   .fraction-side.intro-left .fraction-large .bar { width: 52px; height: 4px; }
+  /* Push final message bubble further down on mobile */
+  .bubble-down { transform: translateY(22px); }
 } 
