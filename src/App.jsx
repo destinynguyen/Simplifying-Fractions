@@ -224,6 +224,7 @@ export default function App() {
   const introMsg1 = 'Here is our fraction!'
   const introMsg2 = "And here is the fraction's area model!"
   const step3FinalMsg = 'Multiply, then simplify — you\u2019ll end up with the same fraction you started with!'
+  const step1NextMsg = 'Click next to simplify the fraction!'
 
   let bubbleText
   if (step === 0) {
@@ -231,6 +232,8 @@ export default function App() {
     else if (introAreaMsg) bubbleText = introMsg2
     else if (introNextPrompt) bubbleText = STEP_MESSAGES[0]
     else bubbleText = introMsg1
+  } else if (step === 1 && showProduct) {
+    bubbleText = step1NextMsg
   } else if (step === 2 && showProduct) {
     bubbleText = step3FinalMsg
   } else {

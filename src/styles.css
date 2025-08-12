@@ -119,20 +119,20 @@ body {
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 16px;
+  gap: 12px;
   z-index: 5;
 }
 .nav-btn {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 2px solid rgba(0,0,0,0.08);
+  border: none;
   background: var(--green-600);
   color: #fff;
   font-size: 20px;
   font-weight: 900;
   cursor: pointer;
-  box-shadow: none;
+  box-shadow: 0 4px 10px rgba(15, 138, 86, 0.25);
   transition: transform 120ms ease, filter 120ms ease, background-color 120ms ease;
 }
 .nav-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
@@ -344,6 +344,7 @@ body {
   .fraction .numerator, .fraction .denominator { font-size: 38px; }
   .fraction .bar { width: 100px; }
   .nav { bottom: 96px; }
+  .nav { gap: 10px; }
   .nav-btn { width: 36px; height: 36px; font-size: 16px; }
   .mascot { width: 54px; height: 54px; }
   .bubble { max-width: 220px; transform: translateY(-8px); }
