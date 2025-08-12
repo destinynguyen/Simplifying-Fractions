@@ -388,5 +388,5 @@ body {
   .fraction-side.intro-left .fraction-large .denominator { font-size: 30px; }
   .fraction-side.intro-left .fraction-large .bar { width: 52px; height: 4px; }
   /* Push final message bubble further down on mobile */
-  .bubble-down { transform: translateY(22px); }
+  .bubble-down { transform: translateY(18px); }
 } 

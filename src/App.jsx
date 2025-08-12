@@ -230,7 +230,7 @@ export default function App() {
 
   const introMsg1 = 'Here is our fraction!'
   const introMsg2 = "And here is the fraction's area model!"
-  const step3FinalMsg = 'Multiply, then simplify — you\u2019ll end up with the same fraction you started with!'
+  const step3FinalMsg = 'Multiply and simplify, and you\u2019ll return to the fraction you started with!'
   const step1NextMsg = 'Add another line or click next to simplify!'
 
   let bubbleText
