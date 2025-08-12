@@ -206,7 +206,7 @@ body {
 }
 .line-draw.draw { opacity: 1; animation: drawLine 650ms ease forwards; }
 .line-draw.present { width: 100%; opacity: 1; }
-.line-draw.erase { width: 100%; opacity: 1; animation: eraseLine 500ms ease forwards; }
+.line-draw.erase { width: 100%; opacity: 1; animation: eraseLine 1000ms ease forwards; }
 @keyframes drawLine { from { width: 0; } to { width: 100%; } }
 @keyframes eraseLine { from { width: 100%; opacity: 1; } to { width: 0; opacity: 0; } }
 .area-grid { position: relative; }
@@ -259,6 +259,7 @@ body {
   gap: 18px;
   transform: translateY(-28px);
 }
+.area-side { position: relative; }
 .area-side .area-card { width: 100%; }
 .area-side .area-grid { aspect-ratio: 1 / 1; }
 
@@ -338,6 +339,17 @@ body {
 .fraction-side.intro-left { transform: translateX(-24px); transition: transform 400ms ease; }
 
 .bubble-step1-down { transform: translateY(-8px); }
+
+.toolbox { position: absolute; top: 12px; right: 12px; z-index: 4; display: flex; gap: 8px; }
+.tool-btn { appearance: none; border: none; background: linear-gradient(180deg, #ff9a2f, #ff7a11); color: #fff; padding: 6px 12px; border-radius: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 6px 16px rgba(255, 122, 17, 0.35); transition: transform 120ms ease, filter 120ms ease; white-space: nowrap; }
+.tool-btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+.tool-btn:disabled { opacity: 0.6; cursor: not-allowed; filter: none; transform: none; }
+@media (max-width: 640px) { .toolbox { top: 8px; right: 8px; } .tool-btn { padding: 5px 8px; font-size: 13px; } }
+
+/* Position the add-line button above the area model */
+.area-side { position: relative; }
+.toolbox { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 8px; }
+@media (max-width: 640px) { .toolbox { top: -28px; left: 50%; transform: translateX(-50%); } .tool-btn { padding: 5px 8px; font-size: 13px; } }
 
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }

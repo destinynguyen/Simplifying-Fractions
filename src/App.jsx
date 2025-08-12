@@ -4,11 +4,12 @@ import flexiIdea from './Flexi_Idea.svg'
 import flexiStars from './Flexi_Stars.svg'
 import flexiTeacher from './Flexi_Teacher (1).svg'
 
-function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1 }) {
+function AreaBox({ rows, cols, filled, label, lineState = 'none', lineCount = 1, additionalLines = 0 }) {
   const total = rows * cols
   const cells = Array.from({ length: total })
   const showLines = lineState !== 'none'
-  const lines = showLines ? Array.from({ length: Math.max(0, lineCount) }) : []
+  const totalLines = showLines ? Math.max(0, lineCount + (additionalLines || 0)) : 0
+  const lines = Array.from({ length: totalLines })
   return (
     <div className="area-card">
       <div
@@ -63,8 +64,10 @@ export default function App() {
   const [introAreaShown, setIntroAreaShown] = useState(false)
   const [introAreaMsg, setIntroAreaMsg] = useState(false)
   const [introNextPrompt, setIntroNextPrompt] = useState(false)
+  const [extraLineCount, setExtraLineCount] = useState(0)
 
-  const resetStep2Visuals = () => {
+  // Reset transient show states; keep extraLineCount so lines persist into step 3
+  const resetShowStates = () => {
     setShowMultiplier(false)
     setShowEquals(false)
     setShowProduct(false)
@@ -106,7 +109,7 @@ export default function App() {
 
   useEffect(() => {
     // Reset visuals when step changes or when a reset occurs on the same step
-    resetStep2Visuals()
+    resetShowStates()
 
     let multTimer
     let eqTimer
@@ -128,7 +131,8 @@ export default function App() {
 
   const handleReset = () => {
     // Reset only the current step's visuals and restart its timers
-    resetStep2Visuals()
+    resetShowStates()
+    setExtraLineCount(0)
     setAnimCycle((c) => c + 1)
     if (step === 0) {
       setIntroActive(true)
@@ -158,7 +162,8 @@ export default function App() {
       return next
     })
     setStep(0)
-    resetStep2Visuals()
+    resetShowStates()
+    setExtraLineCount(0)
     setIntroActive(true)
     setIntroShifted(true)
     setIntroAreaShown(false)
@@ -178,20 +183,22 @@ export default function App() {
   const goPrev = () => {
     setStep((s) => {
       const next = Math.max(0, s - 1)
-      if (next <= 1) resetStep2Visuals()
+      if (next <= 1) resetShowStates()
       return next
     })
   }
   const goNext = () => {
     setStep((s) => {
       const next = Math.min(STEP_MESSAGES.length - 1, s + 1)
-      if (next === 1) resetStep2Visuals()
+      if (next === 1) resetShowStates()
       return next
     })
   }
 
   const f = FRACTIONS[idx]
-  const factor = f.den === 3 ? 3 : 2
+  const baseFactor = f.den === 3 ? 3 : 2
+  const maxExtra = Math.max(0, 6 - baseFactor)
+  const factor = step >= 1 ? baseFactor + extraLineCount : baseFactor
   const pNum = f.num * factor
   const pDen = f.den * factor
   const lineCount = factor - 1
@@ -224,7 +231,7 @@ export default function App() {
   const introMsg1 = 'Here is our fraction!'
   const introMsg2 = "And here is the fraction's area model!"
   const step3FinalMsg = 'Multiply, then simplify — you\u2019ll end up with the same fraction you started with!'
-  const step1NextMsg = 'Click next to simplify the fraction!'
+  const step1NextMsg = 'Add another line or click next to simplify!'
 
   let bubbleText
   if (step === 0) {
@@ -240,6 +247,8 @@ export default function App() {
     bubbleText = STEP_MESSAGES[step]
   }
 
+  const addLine = () => setExtraLineCount((c) => Math.min(maxExtra, c + 1))
+
   return (
     <div className="page">
       <div className="card">
@@ -252,8 +261,13 @@ export default function App() {
         </div>
 
         <div className="interactive-shell">
-          <div className="content-row">
+          <div className={`content-row ${step === 1 ? 'step1-up' : ''}`}>
             <div className={`area-side ${step === 0 && !introAreaShown ? 'intro-hide' : ''}`}>
+              {step === 1 && showProduct && (
+                <div className="toolbox">
+                  <button className="tool-btn" type="button" onClick={addLine} disabled={extraLineCount >= maxExtra}>Add line</button>
+                </div>
+              )}
               <AreaBox
                 rows={f.rows}
                 cols={f.cols}
@@ -261,6 +275,7 @@ export default function App() {
                 label={f.label}
                 lineState={lineState}
                 lineCount={lineCount}
+                additionalLines={0}
               />
             </div>
             <div className={`fraction-side ${step >= 1 ? 'compact' : ''} ${step === 0 && introShifted ? 'intro-left' : ''}`}>
