@@ -314,7 +314,7 @@ export default function App() {
         </div>
 
         <div className="interactive-shell">
-          <div className={`content-row ${step === 1 ? 'step1-up' : ''} ${step === 2 ? 'step2-top' : ''}`}>
+          <div className={`content-row ${step === 1 ? 'step1-up' : ''} ${step === 2 ? 'step2-top' : ''} ${step === 2 && step2CorrectChosen ? 'compare' : ''}`}>
             <div className={`area-side ${step === 0 && !introAreaShown ? 'intro-hide' : ''}`}>
               {step === 1 && showProduct && (
                 <div className="toolbox">
@@ -387,9 +387,19 @@ export default function App() {
           )}
 
           {step === 2 && step2CorrectChosen && (
-            <div className="compare-row">
-              <AreaBox rows={f.rows} cols={f.cols} filled={f.filled} label={f.label} lineState={'none'} lineCount={lineCount} />
-              <AreaBox rows={f.rows} cols={f.cols} filled={f.filled} label={f.label} lineState={'present'} lineCount={step2ChosenLines} />
+            <div className="choices chosen-only">
+              {step2Options.filter((opt) => opt.isCorrect).map((opt, i) => (
+                <div key={`chosen-${i}`} className="choice chosen">
+                  <AreaBox
+                    rows={(opt.f || f).rows}
+                    cols={(opt.f || f).cols}
+                    filled={(opt.f || f).filled}
+                    label={(opt.f || f).label}
+                    lineState={'present'}
+                    lineCount={step2ChosenLines}
+                  />
+                </div>
+              ))}
             </div>
           )}
 

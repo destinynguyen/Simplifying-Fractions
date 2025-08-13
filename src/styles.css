@@ -366,6 +366,17 @@ body {
 .compare-row { margin-top: 16px; margin-bottom: 140px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: calc(var(--box-size) - 48px); justify-items: center; }
 @media (max-width: 640px) { .choices { grid-template-columns: 1fr; gap: 12px; width: calc(var(--box-size) - 36px); margin-top: 0; margin-bottom: 140px; } .compare-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 140px; } }
 
+/* Compare mode animation for step 2 */
+.content-row.step2-top.compare { grid-template-columns: 1fr; }
+.content-row.step2-top.compare .area-side { transition: transform 400ms ease; transform: translateX(-120px); }
+.choices.chosen-only, .compare-row { transition: transform 400ms ease; }
+/* Align chosen card to the right side visually */
+.content-row.step2-top.compare + .compare-row { transform: translateX(120px); }
+@media (max-width: 640px) {
+  .content-row.step2-top.compare .area-side { transform: translateX(-80px); }
+  .content-row.step2-top.compare + .compare-row { transform: translateX(80px); }
+}
+
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
   .fraction .numerator, .fraction .denominator { font-size: 38px; }
