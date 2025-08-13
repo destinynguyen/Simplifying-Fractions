@@ -351,6 +351,11 @@ body {
 .toolbox { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 8px; }
 @media (max-width: 640px) { .toolbox { top: -28px; left: 50%; transform: translateX(-50%); } .tool-btn { padding: 5px 8px; font-size: 13px; } }
 
+/* Interstitial layout (step 2): area model centered at top */
+.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(-132px); }
+.content-row.step2-top .area-side { width: calc(var(--box-size) - 320px); }
+@media (max-width: 640px) { .content-row.step2-top { transform: translateY(-108px); } .content-row.step2-top .area-side { width: calc(var(--box-size) - 220px); } }
+
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
   .fraction .numerator, .fraction .denominator { font-size: 38px; }

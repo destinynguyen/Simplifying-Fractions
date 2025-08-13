@@ -49,6 +49,7 @@ const FRACTIONS = [
 const STEP_MESSAGES = [
   'Click next to multiply the fraction!',
   "Let's multiply the numerator and denominator!",
+  'Choose the correct match!',
   "Now, let's simplify the fraction!",
 ]
 
@@ -115,12 +116,17 @@ export default function App() {
     let eqTimer
     let prodTimer
 
-    const baseDelay = step === 2 ? 1000 : 0
+    const baseDelay = step === 3 ? 1000 : 0
 
-    if (step === 1 || step === 2) {
+    if (step === 1 || step === 3) {
       multTimer = setTimeout(() => setShowMultiplier(true), baseDelay + 1000)
       eqTimer = setTimeout(() => setShowEquals(true), baseDelay + 1400)
       prodTimer = setTimeout(() => setShowProduct(true), baseDelay + 1800)
+    } else if (step === 2) {
+      // Interstitial page: keep product visible immediately
+      multTimer = setTimeout(() => setShowMultiplier(true), 0)
+      eqTimer = setTimeout(() => setShowEquals(true), 0)
+      prodTimer = setTimeout(() => setShowProduct(true), 0)
     }
     return () => {
       clearTimeout(multTimer)
@@ -204,7 +210,7 @@ export default function App() {
   const lineCount = factor - 1
 
   // Step-aware equation pieces
-  const isStep3 = step === 2
+  const isStep3 = step === 3
   const leftNum = isStep3 ? pNum : f.num
   const leftDen = isStep3 ? pDen : f.den
   const operatorSymbol = isStep3 ? '÷' : '×'
@@ -216,17 +222,15 @@ export default function App() {
   let lineState = 'none'
   if (step === 1) {
     lineState = showProduct ? 'draw' : 'none'
-  } else if (step === 2) {
+  } else if (step === 3) {
     lineState = showProduct ? 'erase' : 'present'
+  } else if (step === 2) {
+    lineState = 'none'
   }
 
-  const coachImg = step === 2 && showProduct ? flexiTeacher : step === 2 ? flexiStars : step === 1 ? flexiIdea : flexiWave
-  const coachClass = step === 2 ? (showProduct ? 'flexi flexi-teacher' : 'flexi flexi-big') : 'flexi'
-  const bubbleClass = step === 2
-    ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}`
-    : step === 1
-    ? 'bubble bubble-step1-down'
-    : 'bubble'
+  const coachImg = step === 3 && showProduct ? flexiTeacher : step === 3 ? flexiStars : step === 1 ? flexiIdea : flexiWave
+  const coachClass = step === 3 ? (showProduct ? 'flexi flexi-teacher' : 'flexi flexi-big') : 'flexi'
+  const bubbleClass = step === 3 ? `bubble bubble-left-more ${showProduct ? 'bubble-down' : ''}` : step === 1 ? 'bubble bubble-step1-down' : 'bubble'
 
   const introMsg1 = 'Here is our fraction!'
   const introMsg2 = "And here is the fraction's area model!"
@@ -241,7 +245,7 @@ export default function App() {
     else bubbleText = introMsg1
   } else if (step === 1 && showProduct) {
     bubbleText = step1NextMsg
-  } else if (step === 2 && showProduct) {
+  } else if (step === 3 && showProduct) {
     bubbleText = step3FinalMsg
   } else {
     bubbleText = STEP_MESSAGES[step]
@@ -261,7 +265,7 @@ export default function App() {
         </div>
 
         <div className="interactive-shell">
-          <div className={`content-row ${step === 1 ? 'step1-up' : ''}`}>
+          <div className={`content-row ${step === 1 ? 'step1-up' : ''} ${step === 2 ? 'step2-top' : ''}`}>
             <div className={`area-side ${step === 0 && !introAreaShown ? 'intro-hide' : ''}`}>
               {step === 1 && showProduct && (
                 <div className="toolbox">
@@ -278,35 +282,37 @@ export default function App() {
                 additionalLines={0}
               />
             </div>
-            <div className={`fraction-side ${step >= 1 ? 'compact' : ''} ${step === 0 && introShifted ? 'intro-left' : ''}`}>
-              <div className={`frac-wrap ${showMultiplier ? 'with-mult' : ''}`}>
-                <span className="fraction-large" aria-label={`fraction ${leftNum} over ${leftDen}`}>
-                  <span className="numerator">{leftNum}</span>
-                  <span className="bar" />
-                  <span className="denominator">{leftDen}</span>
-                </span>
-                {(step >= 1) && (
-                  <span className={`multiplier appear ${showMultiplier ? 'visible' : ''}`} aria-label={multiplierAria}>
-                    {operatorSymbol}
-                    <span className={`mini-frac ${showMultiplier ? 'glow' : ''}`}>
-                      <span className="mini-num">{factor}</span>
-                      <span className="bar" />
-                      <span className="mini-den">{factor}</span>
-                    </span>
-                  </span>
-                )}
-                {(step >= 1) && (
-                  <span className={`equals appear ${showEquals ? 'visible' : ''}`} aria-hidden="true">=</span>
-                )}
-                {(step >= 1) && (
-                  <span className={`fraction-large result appear ${showProduct ? 'visible' : ''}`} aria-label={`fraction ${resultNum} over ${resultDen}`}>
-                    <span className="numerator">{resultNum}</span>
+            {step !== 2 && (
+              <div className={`fraction-side ${step >= 1 ? 'compact' : ''} ${step === 0 && introShifted ? 'intro-left' : ''}`}>
+                <div className={`frac-wrap ${showMultiplier ? 'with-mult' : ''}`}>
+                  <span className="fraction-large" aria-label={`fraction ${leftNum} over ${leftDen}`}>
+                    <span className="numerator">{leftNum}</span>
                     <span className="bar" />
-                    <span className="denominator">{resultDen}</span>
+                    <span className="denominator">{leftDen}</span>
                   </span>
-                )}
+                  {(step >= 1) && (
+                    <span className={`multiplier appear ${showMultiplier ? 'visible' : ''}`} aria-label={multiplierAria}>
+                      {operatorSymbol}
+                      <span className={`mini-frac ${showMultiplier ? 'glow' : ''}`}>
+                        <span className="mini-num">{factor}</span>
+                        <span className="bar" />
+                        <span className="mini-den">{factor}</span>
+                      </span>
+                    </span>
+                  )}
+                  {(step >= 1) && (
+                    <span className={`equals appear ${showEquals ? 'visible' : ''}`} aria-hidden="true">=</span>
+                  )}
+                  {(step >= 1) && (
+                    <span className={`fraction-large result appear ${showProduct ? 'visible' : ''}`} aria-label={`fraction ${resultNum} over ${resultDen}`}>
+                      <span className="numerator">{resultNum}</span>
+                      <span className="bar" />
+                      <span className="denominator">{resultDen}</span>
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="nav">
