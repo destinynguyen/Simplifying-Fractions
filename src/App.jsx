@@ -66,6 +66,10 @@ export default function App() {
   const [introAreaMsg, setIntroAreaMsg] = useState(false)
   const [introNextPrompt, setIntroNextPrompt] = useState(false)
   const [extraLineCount, setExtraLineCount] = useState(0)
+  const [step2Options, setStep2Options] = useState([])
+  const [step2CorrectChosen, setStep2CorrectChosen] = useState(false)
+  const [step2WrongIdx, setStep2WrongIdx] = useState(-1)
+  const [step2ChosenLines, setStep2ChosenLines] = useState(1)
 
   // Reset transient show states; keep extraLineCount so lines persist into step 3
   const resetShowStates = () => {
@@ -127,6 +131,10 @@ export default function App() {
       multTimer = setTimeout(() => setShowMultiplier(true), 0)
       eqTimer = setTimeout(() => setShowEquals(true), 0)
       prodTimer = setTimeout(() => setShowProduct(true), 0)
+      // Build choices
+      setStep2CorrectChosen(false)
+      setStep2WrongIdx(-1)
+      buildStep2Choices()
     }
     return () => {
       clearTimeout(multTimer)
@@ -139,6 +147,9 @@ export default function App() {
     // Reset only the current step's visuals and restart its timers
     resetShowStates()
     setExtraLineCount(0)
+    setStep2CorrectChosen(false)
+    setStep2WrongIdx(-1)
+    setStep2ChosenLines(1)
     setAnimCycle((c) => c + 1)
     if (step === 0) {
       setIntroActive(true)
@@ -170,6 +181,9 @@ export default function App() {
     setStep(0)
     resetShowStates()
     setExtraLineCount(0)
+    setStep2CorrectChosen(false)
+    setStep2WrongIdx(-1)
+    setStep2ChosenLines(1)
     setIntroActive(true)
     setIntroShifted(true)
     setIntroAreaShown(false)
@@ -253,6 +267,41 @@ export default function App() {
 
   const addLine = () => setExtraLineCount((c) => Math.min(maxExtra, c + 1))
 
+  // Build three options for step 2: one correct (lines present with lineCount), two wrong
+  const buildStep2Choices = () => {
+    // Correct option: SAME fraction, with horizontal lines to match factor
+    const randomLines = () => Math.max(1, Math.min(3, Math.floor(Math.random() * 3) + 1))
+    const correct = { isCorrect: true, f, lineState: 'present', lineCount: randomLines() }
+    // Wrong options: DIFFERENT fractions (with horizontal lines too)
+    const poolIdxs = FRACTIONS.map((_, i) => i).filter((i) => i !== idx)
+    // shuffle pool
+    for (let i = poolIdxs.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[poolIdxs[i], poolIdxs[j]] = [poolIdxs[j], poolIdxs[i]]
+    }
+    const wrong1F = FRACTIONS[poolIdxs[0]]
+    const wrong2F = FRACTIONS[poolIdxs[1] || poolIdxs[0]]
+    const wrong1 = { isCorrect: false, f: wrong1F, lineState: 'present', lineCount: randomLines() }
+    const wrong2 = { isCorrect: false, f: wrong2F, lineState: 'present', lineCount: randomLines() }
+    const arr = [correct, wrong1, wrong2]
+    // shuffle
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+    setStep2Options(arr)
+  }
+
+  const handleChoose = (opt, idx) => {
+    if (opt.isCorrect) {
+      setStep2CorrectChosen(true)
+      setStep2WrongIdx(-1)
+      setStep2ChosenLines(opt.lineCount || 1)
+    } else {
+      setStep2WrongIdx(idx)
+    }
+  }
+
   return (
     <div className="page">
       <div className="card">
@@ -314,6 +363,35 @@ export default function App() {
               </div>
             )}
           </div>
+
+          {step === 2 && !step2CorrectChosen && (
+            <div className="choices">
+              {step2Options.map((opt, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={`choice ${step2WrongIdx === i ? 'wrong' : ''}`}
+                  onClick={() => handleChoose(opt, i)}
+                >
+                  <AreaBox
+                    rows={(opt.f || f).rows}
+                    cols={(opt.f || f).cols}
+                    filled={(opt.f || f).filled}
+                    label={(opt.f || f).label}
+                    lineState={opt.lineState}
+                    lineCount={opt.lineCount}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {step === 2 && step2CorrectChosen && (
+            <div className="compare-row">
+              <AreaBox rows={f.rows} cols={f.cols} filled={f.filled} label={f.label} lineState={'none'} lineCount={lineCount} />
+              <AreaBox rows={f.rows} cols={f.cols} filled={f.filled} label={f.label} lineState={'present'} lineCount={step2ChosenLines} />
+            </div>
+          )}
 
           <div className="nav">
             <button className="nav-btn" aria-label="previous" onClick={goPrev}>&lt;</button>

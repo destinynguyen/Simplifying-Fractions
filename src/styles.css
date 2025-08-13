@@ -352,9 +352,19 @@ body {
 @media (max-width: 640px) { .toolbox { top: -28px; left: 50%; transform: translateX(-50%); } .tool-btn { padding: 5px 8px; font-size: 13px; } }
 
 /* Interstitial layout (step 2): area model centered at top */
-.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(-132px); }
+.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(0); }
 .content-row.step2-top .area-side { width: calc(var(--box-size) - 320px); }
-@media (max-width: 640px) { .content-row.step2-top { transform: translateY(-108px); } .content-row.step2-top .area-side { width: calc(var(--box-size) - 220px); } }
+@media (max-width: 640px) { .content-row.step2-top { transform: translateY(-48px); } .content-row.step2-top .area-side { width: calc(var(--box-size) - 220px); } }
+
+/* Step 2 choices */
+.choices { margin-top: 0; margin-bottom: 140px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: calc(var(--box-size) - 48px); }
+.choice { appearance: none; border: none; background: transparent; padding: 0; border-radius: 12px; cursor: pointer; transition: transform 120ms ease, box-shadow 120ms ease; }
+.choice:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.choice.wrong { box-shadow: 0 0 0 3px rgba(248,113,113,0.35) inset; }
+/* Red outline around the area model when wrong is chosen */
+.choice.wrong .area-card { box-shadow: 0 0 0 3px #f87171; border-radius: 12px; }
+.compare-row { margin-top: 16px; margin-bottom: 140px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: calc(var(--box-size) - 48px); justify-items: center; }
+@media (max-width: 640px) { .choices { grid-template-columns: 1fr; gap: 12px; width: calc(var(--box-size) - 36px); margin-top: 0; margin-bottom: 140px; } .compare-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 140px; } }
 
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
