@@ -321,15 +321,32 @@ export default function App() {
                   <button className="tool-btn" type="button" onClick={addLine} disabled={extraLineCount >= maxExtra}>Add line</button>
                 </div>
               )}
-              <AreaBox
-                rows={f.rows}
-                cols={f.cols}
-                filled={f.filled}
-                label={f.label}
-                lineState={lineState}
-                lineCount={lineCount}
-                additionalLines={0}
-              />
+              {step === 2 && step2CorrectChosen ? (
+                <div className="orig-with-frac show-frac">
+                  <AreaBox
+                    rows={f.rows}
+                    cols={f.cols}
+                    filled={f.filled}
+                    label={f.label}
+                    lineState={'none'}
+                    lineCount={lineCount}
+                  />
+                  <span className="fraction-inline" aria-label={`fraction ${f.num} over ${f.den}`}>
+                    <span className="numerator">{f.num}</span>
+                    <span className="bar" />
+                    <span className="denominator">{f.den}</span>
+                  </span>
+                </div>
+              ) : (
+                <AreaBox
+                  rows={f.rows}
+                  cols={f.cols}
+                  filled={f.filled}
+                  label={f.label}
+                  lineState={lineState}
+                  lineCount={lineCount}
+                />
+              )}
             </div>
             {step !== 2 && (
               <div className={`fraction-side ${step >= 1 ? 'compact' : ''} ${step === 0 && introShifted ? 'intro-left' : ''}`}>
@@ -373,14 +390,16 @@ export default function App() {
                   className={`choice ${step2WrongIdx === i ? 'wrong' : ''}`}
                   onClick={() => handleChoose(opt, i)}
                 >
-                  <AreaBox
-                    rows={(opt.f || f).rows}
-                    cols={(opt.f || f).cols}
-                    filled={(opt.f || f).filled}
-                    label={(opt.f || f).label}
-                    lineState={opt.lineState}
-                    lineCount={opt.lineCount}
-                  />
+                  <div className="choice-col">
+                    <AreaBox
+                      rows={(opt.f || f).rows}
+                      cols={(opt.f || f).cols}
+                      filled={(opt.f || f).filled}
+                      label={(opt.f || f).label}
+                      lineState={opt.lineState}
+                      lineCount={opt.lineCount}
+                    />
+                  </div>
                 </button>
               ))}
             </div>
@@ -390,14 +409,21 @@ export default function App() {
             <div className="choices chosen-only">
               {step2Options.filter((opt) => opt.isCorrect).map((opt, i) => (
                 <div key={`chosen-${i}`} className="choice chosen">
-                  <AreaBox
-                    rows={(opt.f || f).rows}
-                    cols={(opt.f || f).cols}
-                    filled={(opt.f || f).filled}
-                    label={(opt.f || f).label}
-                    lineState={'present'}
-                    lineCount={step2ChosenLines}
-                  />
+                  <div className="match-pair">
+                    <AreaBox
+                      rows={(opt.f || f).rows}
+                      cols={(opt.f || f).cols}
+                      filled={(opt.f || f).filled}
+                      label={(opt.f || f).label}
+                      lineState={'present'}
+                      lineCount={step2ChosenLines}
+                    />
+                    <span className="fraction-inline" aria-label={`fraction ${pNum} over ${pDen}`}>
+                      <span className="numerator">{pNum}</span>
+                      <span className="bar" />
+                      <span className="denominator">{pDen}</span>
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

@@ -354,6 +354,18 @@ body {
 /* Interstitial layout (step 2): area model centered at top */
 .content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(0); }
 .content-row.step2-top .area-side { width: calc(var(--box-size) - 320px); }
+
+/* Override: Ensure original area model has consistent size */
+.content-row.step2-top .area-side .orig-with-frac .area-card {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+.content-row.step2-top .area-side .orig-with-frac .area-grid {
+  width: 80px !important;
+  height: 80px !important;
+  aspect-ratio: 1 / 1 !important;
+}
 @media (max-width: 640px) { .content-row.step2-top { transform: translateY(-48px); } .content-row.step2-top .area-side { width: calc(var(--box-size) - 220px); } }
 
 /* Step 2 choices */
@@ -372,9 +384,157 @@ body {
 .choices.chosen-only, .compare-row { transition: transform 400ms ease; }
 /* Align chosen card to the right side visually */
 .content-row.step2-top.compare + .compare-row { transform: translateX(120px); }
+
+/* Move chosen area model slightly to the right */
+.content-row.step2-top.compare + .choices.chosen-only { 
+  transform: translateX(15px); 
+}
+
 @media (max-width: 640px) {
   .content-row.step2-top.compare .area-side { transform: translateX(-80px); }
   .content-row.step2-top.compare + .compare-row { transform: translateX(80px); }
+  .content-row.step2-top.compare + .choices.chosen-only { 
+    transform: translateX(10px); 
+  }
+}
+
+/* Purple fraction styling for labels under models */
+.choice .fraction-under { color: var(--purple-600); font-weight: 800; }
+.choice .fraction-under .numerator, .choice .fraction-under .denominator { color: var(--purple-600); }
+.choice .fraction-under .bar { background: linear-gradient(90deg, var(--purple-400), var(--purple-600)); }
+
+/* Fallback styling for plain numeric labels under area models */
+.choices .choice > span { color: var(--purple-600); font-weight: 800; font-size: 20px; }
+/* Ensure our fraction components also match the style */
+.fraction-under, .fraction-inline { color: var(--purple-600); font-weight: 800; }
+.fraction-under .numerator, .fraction-under .denominator,
+.fraction-inline .numerator, .fraction-inline .denominator { color: var(--purple-600); font-size: 20px; }
+
+/* Choice layout: area model with fraction to the right */
+.choice-col { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+}
+
+/* Size area models properly in choices */
+.choice .area-card { 
+  width: 80px; 
+  height: 80px; 
+}
+
+.choice .area-grid { 
+  width: 100%; 
+  height: 100%; 
+  aspect-ratio: 1 / 1; 
+}
+
+/* Remove the old vertical stacking styles */
+.choice .fraction-under { display: none; }
+
+/* Style the inline fractions next to area models */
+.choice .fraction-inline { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  color: var(--purple-600); 
+  font-weight: 800; 
+}
+
+.choice .fraction-inline .numerator, 
+.choice .fraction-inline .denominator { 
+  color: var(--purple-600); 
+  font-size: 20px; 
+  font-weight: 800; 
+}
+
+.choice .fraction-inline .bar { 
+  width: 24px; 
+  height: 3px; 
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600)); 
+  border-radius: 2px; 
+  margin: 2px 0; 
+}
+
+/* Style the match-pair to show area model and fraction side by side */
+.match-pair {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Ensure proper sizing for area models in chosen state */
+.choice.chosen .area-card {
+  width: 80px;
+  height: 80px;
+}
+
+/* Style the fraction next to the chosen area model */
+.match-pair .fraction-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--purple-600);
+  font-weight: 800;
+}
+
+.match-pair .fraction-inline .numerator,
+.match-pair .fraction-inline .denominator {
+  color: var(--purple-600);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.match-pair .fraction-inline .bar {
+  width: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600));
+  border-radius: 2px;
+  margin: 2px 0;
+}
+
+/* Style the original fraction with area model side by side */
+.orig-with-frac {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Ensure proper sizing for the original area model */
+.orig-with-frac .area-card {
+  width: 80px;
+  height: 80px;
+}
+
+/* Override step2-top constraints for consistent sizing */
+.content-row.step2-top.compare .area-side .orig-with-frac .area-card {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+/* Style the fraction next to the original area model */
+.orig-with-frac .fraction-inline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--purple-600);
+  font-weight: 800;
+}
+
+.orig-with-frac .fraction-inline .numerator,
+.orig-with-frac .fraction-inline .denominator {
+  color: var(--purple-600);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.orig-with-frac .fraction-inline .bar {
+  width: 24px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple-400), var(--purple-600));
+  border-radius: 2px;
+  margin: 2px 0;
 }
 
 @media (max-width: 640px) {
