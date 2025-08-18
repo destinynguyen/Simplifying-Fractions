@@ -74,6 +74,7 @@ export default function App() {
   const [showStep2NumeratorOnly, setShowStep2NumeratorOnly] = useState(false)
   const [showStep2Equals, setShowStep2Equals] = useState(false)
   const [showStep2Result, setShowStep2Result] = useState(false)
+  const [showLinesToggle, setShowLinesToggle] = useState(false)
 
   // Reset transient show states; keep extraLineCount so lines persist into step 3
   const resetShowStates = () => {
@@ -84,6 +85,7 @@ export default function App() {
     setShowStep2NumeratorOnly(false)
     setShowStep2Equals(false)
     setShowStep2Result(false)
+    setShowLinesToggle(false)
   }
 
   useEffect(() => {
@@ -440,14 +442,25 @@ export default function App() {
               {step2Options.filter((opt) => opt.isCorrect).map((opt, i) => (
                 <div key={`chosen-${i}`} className="choice chosen">
                   <div className="match-pair">
-                    <AreaBox
-                      rows={(opt.f || f).rows}
-                      cols={(opt.f || f).cols}
-                      filled={(opt.f || f).filled}
-                      label={(opt.f || f).label}
-                      lineState={showStep2Division ? 'erase' : 'present'}
-                      lineCount={step2ChosenLines}
-                    />
+                    <div className="area-with-toggle">
+                      <AreaBox
+                        rows={(opt.f || f).rows}
+                        cols={(opt.f || f).cols}
+                        filled={(opt.f || f).filled}
+                        label={(opt.f || f).label}
+                        lineState={showLinesToggle ? 'present' : (showStep2Division ? 'erase' : 'present')}
+                        lineCount={step2ChosenLines}
+                      />
+                      {showStep2Division && (
+                        <button 
+                          className="toggle-lines-btn" 
+                          type="button" 
+                          onClick={() => setShowLinesToggle(!showLinesToggle)}
+                        >
+                          {showLinesToggle ? 'Hide line' : 'Show line'}
+                        </button>
+                      )}
+                    </div>
                     <div className="fraction-with-division">
                       <span className="fraction-inline" aria-label={`fraction ${(opt.f || f).filled * (step2ChosenLines + 1)} over ${(opt.f || f).den * (step2ChosenLines + 1)}`}>
                         <span className="numerator">{(opt.f || f).filled * (step2ChosenLines + 1)}</span>
