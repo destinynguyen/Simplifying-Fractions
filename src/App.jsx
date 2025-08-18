@@ -445,7 +445,7 @@ export default function App() {
                       cols={(opt.f || f).cols}
                       filled={(opt.f || f).filled}
                       label={(opt.f || f).label}
-                      lineState={'present'}
+                      lineState={showStep2Division ? 'erase' : 'present'}
                       lineCount={step2ChosenLines}
                     />
                     <div className="fraction-with-division">
