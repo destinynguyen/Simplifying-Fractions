@@ -157,9 +157,9 @@ export default function App() {
   useEffect(() => {
     if (step === 2 && step2CorrectChosen) {
       const numTimer = setTimeout(() => setShowStep2NumeratorOnly(true), 1500)
-      const divTimer = setTimeout(() => setShowStep2Division(true), 3000)
-      const eqTimer = setTimeout(() => setShowStep2Equals(true), 3500)
-      const resultTimer = setTimeout(() => setShowStep2Result(true), 4000)
+      const divTimer = setTimeout(() => setShowStep2Division(true), 4500)
+      const eqTimer = setTimeout(() => setShowStep2Equals(true), 5000)
+      const resultTimer = setTimeout(() => setShowStep2Result(true), 5500)
       return () => {
         clearTimeout(numTimer)
         clearTimeout(divTimer)
