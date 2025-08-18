@@ -454,18 +454,22 @@ export default function App() {
                         <span className="bar" />
                         <span className="denominator">{(opt.f || f).den * (step2ChosenLines + 1)}</span>
                       </span>
-                      {showStep2NumeratorOnly && !showStep2Division && (
-                        <div className="step2-division">
-                          <span className="division-symbol">÷</span>
-                          <span className="division-factor" aria-label={`${step2ChosenLines + 1}`}>
-                            <span className="mini-num">{step2ChosenLines + 1}</span>
-                          </span>
-                          <span className="division-equals">=</span>
-                          <span className="division-result" aria-label="1">
-                            <span className="numerator">1</span>
-                          </span>
-                        </div>
-                      )}
+                                              {showStep2NumeratorOnly && !showStep2Division && (
+                          <div className="step2-division">
+                            <span className="division-symbol">÷</span>
+                            <span className="division-factor" aria-label={`${step2ChosenLines + 1}`}>
+                              <span className="mini-num">{step2ChosenLines + 1}</span>
+                              <span className="bar" />
+                              <span className="mini-den" style={{visibility: 'hidden'}}>{step2ChosenLines + 1}</span>
+                            </span>
+                            <span className="division-equals">=</span>
+                            <span className="division-result" aria-label="1">
+                              <span className="numerator">1</span>
+                              <span className="bar" />
+                              <span className="denominator" style={{visibility: 'hidden'}}>1</span>
+                            </span>
+                          </div>
+                        )}
                       {showStep2Division && (
                         <div className="step2-division">
                           <span className="division-symbol">÷</span>
