@@ -353,7 +353,10 @@ body {
 
 /* Interstitial layout (step 2): area model centered at top */
 .content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(0); }
-.content-row.step2-top .area-side { width: 120px; min-width: 120px; margin-left: 20px; }
+.content-row.step2-top .area-side { width: 120px; min-width: 120px; margin-left: 0; }
+
+/* Keep the original fraction area model positioned as before when compare mode is active */
+.content-row.step2-top.compare .area-side { margin-left: 20px; }
 
 /* Override: Ensure original area model has consistent size */
 .content-row.step2-top .area-side .orig-with-frac .area-card {

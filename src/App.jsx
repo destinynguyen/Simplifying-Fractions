@@ -71,6 +71,7 @@ export default function App() {
   const [step2WrongIdx, setStep2WrongIdx] = useState(-1)
   const [step2ChosenLines, setStep2ChosenLines] = useState(1)
   const [showStep2Division, setShowStep2Division] = useState(false)
+  const [showStep2NumeratorOnly, setShowStep2NumeratorOnly] = useState(false)
   const [showStep2Equals, setShowStep2Equals] = useState(false)
   const [showStep2Result, setShowStep2Result] = useState(false)
 
@@ -80,6 +81,7 @@ export default function App() {
     setShowEquals(false)
     setShowProduct(false)
     setShowStep2Division(false)
+    setShowStep2NumeratorOnly(false)
     setShowStep2Equals(false)
     setShowStep2Result(false)
   }
@@ -152,10 +154,12 @@ export default function App() {
   // Show division animation for step 2 after correct match is chosen
   useEffect(() => {
     if (step === 2 && step2CorrectChosen) {
-      const divTimer = setTimeout(() => setShowStep2Division(true), 1500)
-      const eqTimer = setTimeout(() => setShowStep2Equals(true), 2000)
-      const resultTimer = setTimeout(() => setShowStep2Result(true), 2500)
+      const numTimer = setTimeout(() => setShowStep2NumeratorOnly(true), 1500)
+      const divTimer = setTimeout(() => setShowStep2Division(true), 3000)
+      const eqTimer = setTimeout(() => setShowStep2Equals(true), 3500)
+      const resultTimer = setTimeout(() => setShowStep2Result(true), 4000)
       return () => {
+        clearTimeout(numTimer)
         clearTimeout(divTimer)
         clearTimeout(eqTimer)
         clearTimeout(resultTimer)
@@ -270,6 +274,8 @@ export default function App() {
   const introMsg2 = "And here is the fraction's area model!"
   const step3FinalMsg = 'Multiply and simplify, and you\u2019ll return to the fraction you started with!'
   const step1NextMsg = 'Add another line or click next to simplify!'
+  const step2NumeratorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).filled * (step2ChosenLines + 1)} highlighted pieces ÷ ${step2ChosenLines + 1} = 1`
+  const step2DenominatorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).den * (step2ChosenLines + 1)} total pieces ÷ ${step2ChosenLines + 1} = ${(step2Options.find(opt => opt.isCorrect)?.f || f).den}`
 
   let bubbleText
   if (step === 0) {
@@ -279,6 +285,10 @@ export default function App() {
     else bubbleText = introMsg1
   } else if (step === 1 && showProduct) {
     bubbleText = step1NextMsg
+  } else if (step === 2 && step2CorrectChosen && showStep2NumeratorOnly && !showStep2Division) {
+    bubbleText = step2NumeratorMsg
+  } else if (step === 2 && step2CorrectChosen && showStep2Division) {
+    bubbleText = step2DenominatorMsg
   } else if (step === 3 && showProduct) {
     bubbleText = step3FinalMsg
   } else {
@@ -444,6 +454,18 @@ export default function App() {
                         <span className="bar" />
                         <span className="denominator">{(opt.f || f).den * (step2ChosenLines + 1)}</span>
                       </span>
+                      {showStep2NumeratorOnly && !showStep2Division && (
+                        <div className="step2-division">
+                          <span className="division-symbol">÷</span>
+                          <span className="division-factor" aria-label={`${step2ChosenLines + 1}`}>
+                            <span className="mini-num">{step2ChosenLines + 1}</span>
+                          </span>
+                          <span className="division-equals">=</span>
+                          <span className="division-result" aria-label="1">
+                            <span className="numerator">1</span>
+                          </span>
+                        </div>
+                      )}
                       {showStep2Division && (
                         <div className="step2-division">
                           <span className="division-symbol">÷</span>
