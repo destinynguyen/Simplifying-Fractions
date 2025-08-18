@@ -375,9 +375,17 @@ body {
 .choices { margin-top: 0; margin-bottom: 140px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: calc(var(--box-size) - 48px); }
 .choice { appearance: none; border: none; background: transparent; padding: 0; border-radius: 12px; cursor: pointer; transition: transform 120ms ease, box-shadow 120ms ease; }
 .choice:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-.choice.wrong { box-shadow: 0 0 0 3px rgba(248,113,113,0.35) inset; }
-/* Red outline around the area model when wrong is chosen */
-.choice.wrong .area-card { box-shadow: 0 0 0 3px #f87171; border-radius: 12px; }
+/* Clean red outline for wrong choices - only around area model */
+.choice.wrong { 
+  background: transparent;
+}
+
+.choice.wrong .area-card { 
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.05);
+  box-sizing: border-box;
+}
 .compare-row { margin-top: 16px; margin-bottom: 140px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: calc(var(--box-size) - 48px); justify-items: center; }
 @media (max-width: 640px) { .choices { grid-template-columns: 1fr; gap: 12px; width: calc(var(--box-size) - 36px); margin-top: 0; margin-bottom: 140px; } .compare-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 140px; } }
 
