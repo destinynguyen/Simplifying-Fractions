@@ -70,12 +70,18 @@ export default function App() {
   const [step2CorrectChosen, setStep2CorrectChosen] = useState(false)
   const [step2WrongIdx, setStep2WrongIdx] = useState(-1)
   const [step2ChosenLines, setStep2ChosenLines] = useState(1)
+  const [showStep2Division, setShowStep2Division] = useState(false)
+  const [showStep2Equals, setShowStep2Equals] = useState(false)
+  const [showStep2Result, setShowStep2Result] = useState(false)
 
   // Reset transient show states; keep extraLineCount so lines persist into step 3
   const resetShowStates = () => {
     setShowMultiplier(false)
     setShowEquals(false)
     setShowProduct(false)
+    setShowStep2Division(false)
+    setShowStep2Equals(false)
+    setShowStep2Result(false)
   }
 
   useEffect(() => {
@@ -142,6 +148,20 @@ export default function App() {
       clearTimeout(prodTimer)
     }
   }, [step, animCycle])
+
+  // Show division animation for step 2 after correct match is chosen
+  useEffect(() => {
+    if (step === 2 && step2CorrectChosen) {
+      const divTimer = setTimeout(() => setShowStep2Division(true), 1500)
+      const eqTimer = setTimeout(() => setShowStep2Equals(true), 2000)
+      const resultTimer = setTimeout(() => setShowStep2Result(true), 2500)
+      return () => {
+        clearTimeout(divTimer)
+        clearTimeout(eqTimer)
+        clearTimeout(resultTimer)
+      }
+    }
+  }, [step, step2CorrectChosen])
 
   const handleReset = () => {
     // Reset only the current step's visuals and restart its timers
@@ -418,11 +438,33 @@ export default function App() {
                       lineState={'present'}
                       lineCount={step2ChosenLines}
                     />
-                    <span className="fraction-inline" aria-label={`fraction ${pNum} over ${pDen}`}>
-                      <span className="numerator">{pNum}</span>
-                      <span className="bar" />
-                      <span className="denominator">{pDen}</span>
-                    </span>
+                    <div className="fraction-with-division">
+                      <span className="fraction-inline" aria-label={`fraction ${(opt.f || f).filled * (step2ChosenLines + 1)} over ${(opt.f || f).den * (step2ChosenLines + 1)}`}>
+                        <span className="numerator">{(opt.f || f).filled * (step2ChosenLines + 1)}</span>
+                        <span className="bar" />
+                        <span className="denominator">{(opt.f || f).den * (step2ChosenLines + 1)}</span>
+                      </span>
+                      {showStep2Division && (
+                        <div className="step2-division">
+                          <span className="division-symbol">÷</span>
+                          <span className="division-factor" aria-label={`fraction ${step2ChosenLines + 1} over ${step2ChosenLines + 1}`}>
+                            <span className="mini-num">{step2ChosenLines + 1}</span>
+                            <span className="bar" />
+                            <span className="mini-den">{step2ChosenLines + 1}</span>
+                          </span>
+                          {showStep2Equals && (
+                            <span className="division-equals">=</span>
+                          )}
+                          {showStep2Result && (
+                            <span className="division-result" aria-label={`fraction ${(opt.f || f).num} over ${(opt.f || f).den}`}>
+                              <span className="numerator">{(opt.f || f).num}</span>
+                              <span className="bar" />
+                              <span className="denominator">{(opt.f || f).den}</span>
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
