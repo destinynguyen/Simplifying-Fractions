@@ -278,6 +278,8 @@ export default function App() {
   const step1NextMsg = 'Add another line or click next to simplify!'
   const step2NumeratorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).filled * (step2ChosenLines + 1)} highlighted pieces ÷ ${step2ChosenLines + 1} = 1`
   const step2DenominatorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).den * (step2ChosenLines + 1)} total pieces ÷ ${step2ChosenLines + 1} = ${(step2Options.find(opt => opt.isCorrect)?.f || f).den}`
+  const step2WrongMsg = 'Try again! Find the matching area model.'
+  const step2CorrectMsg = 'Great job! Now let\'s see how to simplify this fraction.'
 
   let bubbleText
   if (step === 0) {
@@ -287,6 +289,10 @@ export default function App() {
     else bubbleText = introMsg1
   } else if (step === 1 && showProduct) {
     bubbleText = step1NextMsg
+  } else if (step === 2 && step2WrongIdx !== -1) {
+    bubbleText = step2WrongMsg
+  } else if (step === 2 && step2CorrectChosen && !showStep2NumeratorOnly) {
+    bubbleText = step2CorrectMsg
   } else if (step === 2 && step2CorrectChosen && showStep2NumeratorOnly && !showStep2Division) {
     bubbleText = step2NumeratorMsg
   } else if (step === 2 && step2CorrectChosen && showStep2Division) {
@@ -448,7 +454,7 @@ export default function App() {
                         cols={(opt.f || f).cols}
                         filled={(opt.f || f).filled}
                         label={(opt.f || f).label}
-                        lineState={showLinesToggle ? 'present' : (showStep2Division ? 'erase' : 'present')}
+                        lineState={showLinesToggle ? 'present' : (showStep2Result ? 'erase' : 'present')}
                         lineCount={step2ChosenLines}
                       />
                       {showStep2Division && (
