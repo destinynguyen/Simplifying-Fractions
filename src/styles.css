@@ -504,7 +504,6 @@ body {
   border-radius: 2px;
   margin: 2px 0;
 }
-}
 
 /* Style the original fraction with area model side by side */
 .orig-with-frac {
@@ -560,17 +559,17 @@ body {
   :root { --box-size: min(320px, 92vw); }
   .fraction .numerator, .fraction .denominator { font-size: 38px; }
   .fraction .bar { width: 100px; }
-  .nav { bottom: 96px; gap: 10px; }
+  .nav { bottom: 80px; gap: 10px; }
   .nav-btn { width: 36px; height: 36px; font-size: 16px; }
   .bubble { font-size: 14px; max-width: 200px; padding: 12px 16px; border-radius: 16px; }
   .bubble::before { border-width: 0 8px 8px 0; }
-  .coach { bottom: 140px; left: 24px; }
-  .flexi { width: 54px; height: 54px; }
-  .flexi-big { width: 60px; height: 60px; }
-  .flexi-teacher { width: 48px; height: 48px; }
-  .bubble-left-more { left: 72px; }
-  .bubble-step1-down { transform: translateY(12px); }
-  .bubble-down { transform: translateY(18px); }
+  .coach { bottom: 2px; left: 12px; gap: 12px; }
+  .flexi { width: 54px; height: 54px; transform: translateY(4px); }
+  .flexi-big { width: 60px; height: 60px; transform: translateY(4px); }
+  .flexi-teacher { width: 48px; height: 48px; transform: translateY(4px); }
+  .bubble-left-more { margin-left: -6px; }
+  .bubble-step1-down { transform: translateY(8px); }
+  .bubble-down { transform: translateY(12px); }
 }
 
 /* Step 2 division animation styling */
@@ -700,3 +699,8 @@ body {
 }
 
 @media (max-width: 640px) { 
+  .toggle-lines-btn {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+} 
