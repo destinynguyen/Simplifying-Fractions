@@ -154,20 +154,7 @@ export default function App() {
   }, [step, animCycle])
 
   // Show division animation for step 2 after correct match is chosen
-  useEffect(() => {
-    if (step === 2 && step2CorrectChosen) {
-      const numTimer = setTimeout(() => setShowStep2NumeratorOnly(true), 1500)
-      const divTimer = setTimeout(() => setShowStep2Division(true), 4500)
-      const eqTimer = setTimeout(() => setShowStep2Equals(true), 5000)
-      const resultTimer = setTimeout(() => setShowStep2Result(true), 5500)
-      return () => {
-        clearTimeout(numTimer)
-        clearTimeout(divTimer)
-        clearTimeout(eqTimer)
-        clearTimeout(resultTimer)
-      }
-    }
-  }, [step, step2CorrectChosen])
+  // (Now handled manually in handleChoose function)
 
   const handleReset = () => {
     // Reset only the current step's visuals and restart its timers
@@ -279,7 +266,7 @@ export default function App() {
   const step2NumeratorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).filled * (step2ChosenLines + 1)} highlighted pieces ÷ ${step2ChosenLines + 1} = 1`
   const step2DenominatorMsg = `${(step2Options.find(opt => opt.isCorrect)?.f || f).den * (step2ChosenLines + 1)} total pieces ÷ ${step2ChosenLines + 1} = ${(step2Options.find(opt => opt.isCorrect)?.f || f).den}`
   const step2WrongMsg = 'Try again! Find the matching area model.'
-  const step2CorrectMsg = 'Great job! Now let\'s see how to simplify this fraction.'
+  const step2CorrectMsg = 'Excellent! You found the perfect match!'
 
   let bubbleText
   if (step === 0) {
@@ -335,6 +322,13 @@ export default function App() {
       setStep2CorrectChosen(true)
       setStep2WrongIdx(-1)
       setStep2ChosenLines(opt.lineCount || 1)
+      // Add 3-second delay before starting the division animation
+      setTimeout(() => {
+        setShowStep2NumeratorOnly(true)
+        setTimeout(() => setShowStep2Division(true), 3000)
+        setTimeout(() => setShowStep2Equals(true), 3500)
+        setTimeout(() => setShowStep2Result(true), 4000)
+      }, 3000)
     } else {
       setStep2WrongIdx(idx)
     }
