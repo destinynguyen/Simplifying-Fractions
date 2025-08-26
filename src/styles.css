@@ -367,7 +367,7 @@ body {
 }
 
 /* Interstitial layout (step 2): area model centered at top */
-.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(50px); }
+.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(20px); }
 .content-row.step2-top .area-side { width: 100px; min-width: 100px; max-width: 100px; margin-left: 0; }
 
 /* Keep the original fraction area model positioned as before when compare mode is active */
@@ -597,13 +597,20 @@ body {
   
   /* Make area model bigger on mobile for better proportions */
   .area-side .area-card {
-    max-width: 320px !important;
+    max-width: 280px !important;
     width: 100% !important;
   }
   
   .content-row .area-side {
     width: 100% !important;
-    max-width: 320px !important;
+    max-width: 280px !important;
+  }
+  
+  /* Fix original area model size on mobile */
+  .content-row.step2-top .area-side {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
   }
   
   /* Make fractions smaller on mobile */
@@ -624,6 +631,17 @@ body {
   
   .multiplier {
     font-size: 24px !important;
+  }
+  
+  /* Force all numbers in main equation to be same size */
+  .fraction-large .numerator,
+  .fraction-large .denominator,
+  .multiplier .numerator,
+  .multiplier .denominator,
+  .multiplier {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: var(--purple-600) !important;
   }
 }
 
