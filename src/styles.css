@@ -572,8 +572,8 @@ body {
 
 @media (max-width: 640px) {
   :root { --box-size: min(320px, 92vw); }
-  .fraction .numerator, .fraction .denominator { font-size: 38px; }
-  .fraction .bar { width: 100px; }
+  .fraction .numerator, .fraction .denominator { font-size: 32px; }
+  .fraction .bar { width: 80px; }
   .nav { bottom: 80px; gap: 10px; }
   .nav-btn { width: 36px; height: 36px; font-size: 16px; }
   .bubble { font-size: 12px; max-width: 160px; padding: 8px 12px; border-radius: 12px; }
@@ -594,6 +594,37 @@ body {
   .bubble-left-more { margin-left: -6px; }
   .bubble-step1-down { transform: translateY(8px); }
   .bubble-down { transform: translateY(12px); }
+  
+  /* Make area model bigger on mobile for better proportions */
+  .area-side .area-card {
+    max-width: 320px !important;
+    width: 100% !important;
+  }
+  
+  .content-row .area-side {
+    width: 100% !important;
+    max-width: 320px !important;
+  }
+  
+  /* Make fractions smaller on mobile */
+  .fraction-large .numerator,
+  .fraction-large .denominator {
+    font-size: 24px !important;
+  }
+  
+  .fraction-large .bar {
+    width: 32px !important;
+  }
+  
+  /* Ensure consistent number sizes in main equation */
+  .multiplier .numerator,
+  .multiplier .denominator {
+    font-size: 24px !important;
+  }
+  
+  .multiplier {
+    font-size: 24px !important;
+  }
 }
 
 /* Step 2 division animation styling */
