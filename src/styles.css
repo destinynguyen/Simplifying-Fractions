@@ -577,11 +577,20 @@ body {
   .nav { bottom: 80px; gap: 10px; }
   .nav-btn { width: 36px; height: 36px; font-size: 16px; }
   .bubble { font-size: 12px; max-width: 160px; padding: 8px 12px; border-radius: 12px; }
-  .bubble::before { border-width: 0 6px 6px 0; }
-  .coach { bottom: 16px; left: 12px; gap: 10px; }
-  .flexi { width: 54px; height: 54px; transform: translateY(4px); }
-  .flexi-big { width: 60px; height: 60px; transform: translateY(4px); }
-  .flexi-teacher { width: 48px; height: 48px; transform: translateY(4px); }
+  .bubble::before { 
+    border-width: 0 6px 6px 0 !important; 
+    border-right-color: #ffffff !important;
+    border-top-color: transparent !important;
+    border-bottom-color: transparent !important;
+    left: -6px !important;
+  }
+  .bubble::after {
+    display: none !important;
+  }
+  .coach { bottom: 16px; left: 12px; gap: 0px; }
+  .flexi { width: 85px; height: 85px; transform: translateY(4px); }
+  .flexi-big { width: 100px; height: 100px; transform: translateY(4px); }
+  .flexi-teacher { width: 78px; height: 78px; transform: translateY(4px); }
   .bubble-left-more { margin-left: -6px; }
   .bubble-step1-down { transform: translateY(8px); }
   .bubble-down { transform: translateY(12px); }
