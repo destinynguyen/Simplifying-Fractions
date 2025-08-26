@@ -349,11 +349,26 @@ body {
 /* Position the add-line button above the area model */
 .area-side { position: relative; }
 .toolbox { position: absolute; top: -42px; left: 50%; transform: translateX(-50%); z-index: 4; display: flex; gap: 8px; }
-@media (max-width: 640px) { .toolbox { top: -28px; left: 50%; transform: translateX(-50%); } .tool-btn { padding: 5px 8px; font-size: 13px; } }
+@media (max-width: 640px) { 
+  .toolbox { 
+    top: -32px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  } 
+  .tool-btn { 
+    padding: 6px 10px; 
+    font-size: 12px; 
+    border-radius: 10px;
+    font-weight: 700;
+  } 
+}
 
 /* Interstitial layout (step 2): area model centered at top */
-.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(0); }
-.content-row.step2-top .area-side { width: 120px; min-width: 120px; margin-left: 0; }
+.content-row.step2-top { grid-template-columns: 1fr; justify-items: center; align-items: start; transform: translateY(50px); }
+.content-row.step2-top .area-side { width: 100px; min-width: 100px; max-width: 100px; margin-left: 0; }
 
 /* Keep the original fraction area model positioned as before when compare mode is active */
 .content-row.step2-top.compare .area-side { margin-left: 20px; }
@@ -369,10 +384,10 @@ body {
   height: 80px !important;
   aspect-ratio: 1 / 1 !important;
 }
-@media (max-width: 640px) { .content-row.step2-top { transform: translateY(-48px); } .content-row.step2-top .area-side { width: calc(var(--box-size) - 220px); } }
+@media (max-width: 640px) { .content-row.step2-top { transform: translateY(10px); } .content-row.step2-top .area-side { width: 80px; min-width: 80px; max-width: 80px; } }
 
 /* Step 2 choices */
-.choices { margin-top: 0; margin-bottom: 140px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: calc(var(--box-size) - 48px); }
+.choices { margin-top: 40px; margin-bottom: 140px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; width: calc(var(--box-size) - 48px); }
 .choice { appearance: none; border: none; background: transparent; padding: 0; border-radius: 12px; cursor: pointer; transition: transform 120ms ease, box-shadow 120ms ease; }
 .choice:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
 /* Clean red outline for wrong choices - only around area model */
@@ -387,7 +402,7 @@ body {
   box-sizing: border-box;
 }
 .compare-row { margin-top: 16px; margin-bottom: 140px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: calc(var(--box-size) - 48px); justify-items: center; }
-@media (max-width: 640px) { .choices { grid-template-columns: 1fr; gap: 12px; width: calc(var(--box-size) - 36px); margin-top: 0; margin-bottom: 140px; } .compare-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 140px; } }
+@media (max-width: 640px) { .choices { grid-template-columns: repeat(3, 1fr); gap: 8px; width: calc(var(--box-size) - 36px); margin-top: 32px; margin-bottom: 140px; } .compare-row { grid-template-columns: 1fr; gap: 12px; margin-bottom: 140px; } }
 
 /* Compare mode animation for step 2 */
 .content-row.step2-top.compare { grid-template-columns: 1fr; }
